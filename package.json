@@ -1,0 +1,36 @@
+{
+  "name": "@xstrixu/fastify-typebox-utils",
+  "version": "1.0.0",
+  "description": "Utility types and functions for easier Fastify integration with TypeBox",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xstrixu/fastify-typebox-utils.git"
+  },
+  "bugs": {
+    "url": "https://github.com/xstrixu/fastify-typebox-utils/issues"
+  },
+  "homepage": "https://github.com/xstrixu/fastify-typebox-utils#readme",
+  "author": "Kacper Polak <strixu155@gmail.com>",
+  "license": "MIT",
+  "keywords": [
+    "typescript",
+    "ts",
+    "fastify",
+    "typebox",
+    "utils",
+    "utilities"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "yarn build"
+  },
+  "devDependencies": {
+    "typescript": "^4.7.4"
+  },
+  "peerDependencies": {
+    "@sinclair/typebox": "^0.24.23",
+    "fastify": "^4.3.0"
+  }
+}

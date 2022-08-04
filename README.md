@@ -54,7 +54,20 @@ export const fooSchema = createTypeBoxFastifySchema({
 
 ## Route handler method
 
-You can use the `TypeBoxRouteHandlerMethod` type to automatically set the correct `request` and `reply` parameter types based on the provided schema.
+You can use the `TypeBoxRouteHandlerMethod` type to automatically set the correct `request` and `reply` parameter types based on the provided schema. The advantage of this approach is that you can keep your handlers in separate files and still get the inferred types even better than with the `TypeBoxTypeProvider`.
+
+```ts
+import { fooHandler } from './handlers';
+import { fooSchema } from './schemas';
+
+import type { FastifyPluginAsync } from 'fastify';
+
+const fooPlugin: FastifyPluginAsync = async fastify => {
+  fastify.get('/', { schema: fooSchema }, fooHandler);
+};
+
+export default fooPlugin;
+```
 
 ### sync
 

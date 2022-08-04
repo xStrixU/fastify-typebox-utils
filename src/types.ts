@@ -30,16 +30,22 @@ export type TypeBoxFastifySchema = Partial<
   response?: { [statusCode: number]: TSchema };
 };
 
-type TypeBoxRequestGenericInterface<T extends TypeBoxFastifySchema> = {
+type TypeBoxRouteGenericGenericInterface<T extends TypeBoxFastifySchema> = {
   [P in keyof T as Capitalize<Lowercase<P & string>> &
     keyof RequestGenericInterface]: T[P] extends TSchema ? Static<T[P]> : never;
+} & {
+  Reply: T['response'] extends { [statusCode: number]: TSchema }
+    ? T['response'][200] extends TSchema
+      ? Static<T['response'][200]>
+      : never
+    : never;
 };
 
 type TypeBoxSchemaFastifyReply<Schema extends TSchema> = Omit<
   FastifyReply,
   'code' | 'status' | 'send'
 > & {
-  send(response: Static<Schema>): void;
+  send(response: Static<Schema>): TypeBoxNeverFastifyReply;
 };
 
 type TypeBoxDefaultFastifyReply<
@@ -53,7 +59,7 @@ type TypeBoxDefaultFastifyReply<
   ): TypeBoxSchemaFastifyReply<Schema[Status]>;
   send(
     response: Schema[200] extends TSchema ? Static<Schema[200]> : never
-  ): void;
+  ): TypeBoxNeverFastifyReply;
 };
 
 type TypeBoxNeverFastifyReply = Omit<
@@ -62,7 +68,7 @@ type TypeBoxNeverFastifyReply = Omit<
 > & {
   code(code: never): TypeBoxNeverFastifyReply;
   status(status: never): TypeBoxNeverFastifyReply;
-  send(response: never): void;
+  send(response: never): TypeBoxNeverFastifyReply;
 };
 
 type TypeBoxFastifyReply<Schema extends TypeBoxFastifySchema> =
@@ -76,7 +82,7 @@ export type TypeBoxRouteHandlerMethod<Schema extends TypeBoxFastifySchema> =
       RawServerDefault,
       RawRequestDefaultExpression<RawServerDefault>,
       RawReplyDefaultExpression<RawServerDefault>,
-      TypeBoxRequestGenericInterface<Schema>
+      TypeBoxRouteGenericGenericInterface<Schema>
     >,
     TypeBoxFastifyReply<Schema>
   >;

@@ -9,6 +9,8 @@ Utility types and functions for easier [Fastify](https://www.fastify.io/) integr
   - [yarn](#yarn)
 - [Create schema](#create-schema)
 - [Route handler method](#route-handler-method)
+  - [sync](#sync)
+  - [async](#async)
 - [License](#license)
 
 ## Install
@@ -54,6 +56,8 @@ export const fooSchema = createTypeBoxFastifySchema({
 
 You can use the `TypeBoxRouteHandlerMethod` type to automatically set the correct `request` and `reply` parameter types based on the provided schema.
 
+### sync
+
 ```ts
 // handlers.ts
 
@@ -71,7 +75,7 @@ export const fooHandler: TypeBoxRouteHandlerMethod<typeof fooSchema> = (
 
   reply.send({
     message: 'Everything is fine!',
-  }); // works, by default it uses response[200]
+  }); // works, by default it uses payload for 200 status code
 
   reply.send('abc'); // error: incorrect payload for 200 status code
 
@@ -80,6 +84,37 @@ export const fooHandler: TypeBoxRouteHandlerMethod<typeof fooSchema> = (
   reply.status(400).send(123); // works
 
   reply.status(400).send('abc'); // error: incorrect payload for 400 status code
+};
+```
+
+### async
+
+```ts
+// handlers.ts
+
+import { fooSchema } from './schemas';
+
+import type { TypeBoxRouteHandlerMethod } from '@xstrixu/fastify-typebox-utils';
+
+export const fooHandler: TypeBoxRouteHandlerMethod<typeof fooSchema> = async (
+  request,
+  reply
+) => {
+  const { foo, bar, baz } = request.body; // { foo: string; bar: number; baz: boolean; }
+
+  console.log(`foo: ${foo}, bar: ${bar}, baz: ${baz}`);
+
+  return {
+    message: 'Everything is fine!',
+  }; // works, by default it uses payload for 200 status code
+
+  return 'abc'; // error: incorrect payload for 200 status code
+
+  return reply.status(201).send(1); // error: 201 status code is not defined
+
+  return reply.status(400).send(123); // works
+
+  return reply.status(400).send('abc'); // error: incorrect payload for 400 status code
 };
 ```
 

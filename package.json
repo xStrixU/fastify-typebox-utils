@@ -1,6 +1,6 @@
 {
   "name": "@xstrixu/fastify-typebox-utils",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Utility types and functions for easier Fastify integration with TypeBox",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

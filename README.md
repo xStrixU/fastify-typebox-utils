@@ -92,7 +92,7 @@ export const fooHandler: TypeBoxRouteHandlerMethod<typeof fooSchema> = (
 
   reply.send('abc'); // error: incorrect payload for 200 status code
 
-  reply.status(201).send(1); // error: 201 status code is not defined
+  reply.status(201).send(123); // error: 201 status code is not defined
 
   reply.status(400).send(123); // works
 
@@ -123,7 +123,7 @@ export const fooHandler: TypeBoxRouteHandlerMethod<typeof fooSchema> = async (
 
   return 'abc'; // error: incorrect payload for 200 status code
 
-  return reply.status(201).send(1); // error: 201 status code is not defined
+  return reply.status(201).send(123); // error: 201 status code is not defined
 
   return reply.status(400).send(123); // works
 

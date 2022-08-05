@@ -2,7 +2,14 @@
   "name": "@xstrixu/fastify-typebox-utils",
   "version": "1.0.1",
   "description": "Utility types and functions for easier Fastify integration with TypeBox",
-  "main": "./dist/index.js",
+  "type": "module",
+  "exports": {
+    "import": "./dist/esm/index.js",
+    "require": "./dist/cjs/index.js"
+  },
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "sideEffects": false,
   "types": "./dist/index.d.ts",
   "repository": {
     "type": "git",
@@ -23,7 +30,7 @@
     "utilities"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json",
     "prepublishOnly": "yarn build"
   },
   "devDependencies": {
